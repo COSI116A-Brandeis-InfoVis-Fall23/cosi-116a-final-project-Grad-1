@@ -55,6 +55,16 @@
   <div class="vis-holder">
     <!-- Change viewbox to whatever you want, e.g. "0 0 1000 6000" This determines your aspect ratio and coordinate system -->    
     <!-- Delete all the sample SVG code below after the viewbox to before the closing tag. Populate this part of the SVG with D3. -->
+      <div>
+    <input type="radio" name="race" value="Average"> Average<br>
+    <input type="radio" name="race" value="Black"> Black<br>
+    <input type="radio" name="race" value="Hispanic"> Hispanic<br>
+    <input type="radio" name="race" value="Asian"> Asian<br>
+    <input type="radio" name="race" value="White"> White<br>
+    <input type="radio" name="race" value="Other"> Other<br>
+    </div>
+    <br><br>
+    <div class="linechart-holder" id="linechart"></div>
     <svg id="vis-svg"
       preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 800 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <!-- Add a <g> (group) element to contain our first pie chart -->
@@ -63,8 +73,8 @@
       <g id="second-pie-chart-container"></g>
 
     <!-- Don't delete the closing tag! -->
+
     </svg>
-  </div>
   
   <!-- Your writeup goes here -->
   <div class = "content-column">
@@ -123,6 +133,8 @@
   
   <!-- Scripts at the end avoid need for dealing with async, defer, or onload event handlers -->
   <script src="lib/d3.v4/d3.v4.js"></script>
+  <script src="js/linechart.js"></script>
+  <script src="js/piechart.js"></script>
   <script src="js/visualization.js"></script>
 
 </html>
