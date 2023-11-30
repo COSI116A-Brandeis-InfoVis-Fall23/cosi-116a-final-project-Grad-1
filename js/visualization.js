@@ -5,7 +5,8 @@
   
   piechart();
   
-  linechart();
+  linechart_1();
+  linechart_2();  
 
 })());
 
