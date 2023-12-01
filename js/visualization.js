@@ -4,9 +4,8 @@
 // Immediately Invoked Function Expression to limit access to our variables and prevent 
   
   piechart();
-  
-  linechart_1();
-  linechart_2();  
+  linechart_income();
+  linechart_rent();
 
 })());
 
