@@ -1,4 +1,4 @@
-function linechart() {
+function linechart_1() {
   const incomeData = [
     [
       // 52480, 53444, 54729, 55867, 57355, 59698, 61349, 63704, 65902, 69823,
@@ -72,7 +72,8 @@ function linechart() {
         width + margin.left + margin.right,
         height + margin.top + margin.bottom,
       ].join(" ")
-    );
+    )
+    .attr("class", "incomeData");;
 
   svg = svg
     .append("g")
