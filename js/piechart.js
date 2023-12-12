@@ -1,44 +1,45 @@
 function piechart() {
 
+  // this pie chart does not take csv file properly, always leads to failures;
+  // Thus, we have hardcoded data right here.
   const povertyData = {
     'White': [
-        { label: 'Less than 50 percent', value: 5785 },
-      { label: '50 to 99 percent', value: 6013 },
-      { label: '100 to 149 percent', value: 7298 },
-      { label: '150 to 199 percent', value: 8099 },
-      { label: '200 percent or more', value: 69803}],
+        { label: '<50%', value: 5785 },
+      { label: '50%~99%', value: 6013 },
+      { label: '100%~149%', value: 7298 },
+      { label: '150%~199%', value: 8099 },
+      { label: '>200%', value: 69803}],
     'Black or African American': [
-      { label: 'Less than 50 percent', value: 2014 },
-      { label: '50 to 99 percent', value: 2025 },
-      { label: '100 to 149 percent', value: 1765 },
-      { label: '150 to 199 percent', value: 1889 },
-      { label: '200 percent or more', value: 9422}],
+      { label: '<50%', value: 2014 },
+      { label: '50%~99%', value: 2025 },
+      { label: '100%~149%', value: 1765 },
+      { label: '150%~199%', value: 1889 },
+      { label: '>200%', value: 9422}],
     'American Indian and Alaska Native': [
-      { label: 'Less than 50 percent', value: 153 },
-      { label: '50 to 99 percent', value: 193 },
-      { label: '100 to 149 percent', value: 204 },
-      { label: '150 to 199 percent', value: 121 },
-      { label: '200 percent or more', value: 761}],
+      { label: '<50%', value: 153 },
+      { label: '50%~99%', value: 193 },
+      { label: '100%~149%', value: 204 },
+      { label: '150%~199%', value: 121 },
+      { label: '>200%', value: 761}],
     'Asian': [
-      { label: 'Less than 50 percent', value: 437 },
-      { label: '50 to 99 percent', value: 339 },
-      { label: '100 to 149 percent', value: 318 },
-      { label: '150 to 199 percent', value: 380 },
-      { label: '200 percent or more', value: 4904}],
+      { label: '<50%', value: 437 },
+      { label: '50%~99%', value: 339 },
+      { label: '100%~149%', value: 318 },
+      { label: '150%~199%', value: 380 },
+      { label: '>200%', value: 4904}],
     'Native Hawaiian and Other Pacific Islander': [
-      { label: 'Less than 50 percent', value: 0 },
-      { label: '50 to 99 percent', value: 27 },
-      { label: '100 to 149 percent', value: 0 },
-      { label: '150 to 199 percent', value: 0 },
-      { label: '200 percent or more', value: 283}],
+      { label: '<50%', value: 0 },
+      { label: '50%~99%', value: 27 },
+      { label: '100%~149%', value: 0 },
+      { label: '150%~199%', value: 0 },
+      { label: '>200%', value: 283}],
     'Some other race': [
-      { label: 'Less than 50 percent', value: 102 },
-      { label: '50 to 99 percent', value: 152 },
-      { label: '100 to 149 percent', value: 172 },
-      { label: '150 to 199 percent', value: 147 },
-      { label: '200 percent or more', value: 1247}],
+      { label: '<50%', value: 102 },
+      { label: '50%~99%', value: 152 },
+      { label: '100%~149%', value: 172 },
+      { label: '150%~199%', value: 147 },
+      { label: '>200%', value: 1247}],
   };
-
 
   const raceData = [
     { label: 'White', value: 1500 },
@@ -57,21 +58,23 @@ function piechart() {
   const arc = d3.arc().innerRadius(0).outerRadius(100);
 
   // Positioning for the first pie chart
-const firstChartX = 100; // X-coordinate for the first pie chart
-const firstChartY = 200; // Y-coordinate for the first pie chart
+  const firstChartX = 100; // X-coordinate for the first pie chart
+  const firstChartY = 200; // Y-coordinate for the first pie chart
 
-// Positioning for the second pie chart
-const secondChartX = 400; // X-coordinate for the second pie chart
-const secondChartY = 200; // Y-coordinate for the second pie chart
+  // Positioning for the second pie chart
+  const secondChartX = 400; // X-coordinate for the second pie chart
+  const secondChartY = 200; // Y-coordinate for the second pie chart
 
   // population level Pie Chart
   const raceG = svg.select('#pie-chart-container')
-  .attr('transform', `translate(${firstChartX}, ${firstChartY})`); // Select the first <g> element
+      .attr('transform', `translate(${firstChartX}, ${firstChartY})`);
+
   raceG.selectAll('.arc')
-    .data(pie(raceData))
-    .enter().append('path')
+      .data(pie(raceData))
+      .enter().append('path')
       .attr('d', arc)
       .attr('fill', (d, i) => d3.schemeCategory10[i])
+      .attr('stroke', 'white')
       .on('click', handleClick);
 
   function handleClick(d) {
@@ -87,18 +90,19 @@ const secondChartY = 200; // Y-coordinate for the second pie chart
 
       // Update the second pie chart with the poverty data for the clicked race
       updatePieChart('second-pie-chart-container', clickedPovertyData);
+
     } else {
       console.error('Invalid clicked race:', clickedRace);
     }
 
-    // Handle click event by updating the second pie chart
-    const correspondingData = povertyData[d.data.label]; // Replace this with your own data retrieval logic
-    updatePieChart('chartContainer2', correspondingData);
   }
 
   // Function to update the second pie chart
   function updatePieChart(containerId, newData) {
     console.log('Updating pie chart with data:', newData);
+
+    // Filter out data points with a value of 0
+    const filteredData = newData.filter(d => d.value !== 0);
 
     // Select the second pie chart container's <g> element
     const chartG = d3.select(`#${containerId}`);
@@ -111,7 +115,7 @@ const secondChartY = 200; // Y-coordinate for the second pie chart
 
     // Update the data binding for the second pie chart
     const paths = chartG.selectAll('.arc')
-        .data(pie(newData));
+        .data(pie(filteredData));
 
     // Remove old elements
     paths.exit().remove();
@@ -120,47 +124,73 @@ const secondChartY = 200; // Y-coordinate for the second pie chart
     paths.enter().append('path')
         .attr('class', 'arc')
         .attr('d', arc)
-        .attr('fill', (d, i) => d3.schemeCategory10[i]);
+        .attr('fill', (d, i) => d3.schemeCategory10[i])
+        .attr('stroke', 'white');
 
     // Update existing elements
     paths.attr('d', arc)
-        .attr('fill', (d, i) => d3.schemeCategory10[i]);
+        .attr('fill', (d, i) => d3.schemeCategory10[i])
+        .attr('stroke', 'white');
+
+    // Update text labels
+    const labels = chartG.selectAll('text')
+        .data(pie(filteredData));
+
+    // Remove old text labels
+    labels.exit().remove();
+
+    // Update existing text labels
+    labels.text(d => d.data.label)
+        .attr('transform', d => {
+          const centroid = arc.centroid(d);
+          const x = centroid[0] + centroid[0] * (1.5);
+          const y = centroid[1] + centroid[1] * (1.5);
+          return `translate(${x}, ${y})`;
+        });
+
+    // Enter new text labels
+    labels.enter().append('text')
+        .text(d => d.data.label)
+        .attr('transform', d => {
+          const centroid = arc.centroid(d);
+          const x = centroid[0] + centroid[0] * (1.5);
+          const y = centroid[1] + centroid[1] * (1.5);
+          return `translate(${x}, ${y})`;
+        })
+        .style('text-anchor', 'end')
+        .style('font-size', '12px');
+
   }
 
 
-// poverty by Race Pie Chart (Second Pie Chart)
-const raceG2 = svg.select('#second-pie-chart-container') // Select the second <g> element
-.attr('transform', `translate(${secondChartX}, ${secondChartY})`);// Adjust the translation as needed for the second chart
-raceG2.selectAll('.arc')
-  .data(pie(povertyData['White']))
-  .enter().append('path')
-    .attr('d', arc)
-    .attr('fill', (d, i) => d3.schemeCategory10[i % 10]);
+  // poverty by Race Pie Chart (Second Pie Chart)
+  const raceG2 = svg.select('#second-pie-chart-container')
+      .attr('transform', `translate(${secondChartX}, ${secondChartY})`);
+
+  raceG2.selectAll('.arc')
+      .data(pie(povertyData['White']))
+      .enter().append('path')
+      .attr('d', arc)
+      .attr('fill', (d, i) => d3.schemeCategory10[i % 10])
+      .attr('stroke', 'white');
+
+  raceG2.selectAll('text')
+      .data(pie(povertyData['White']))
+      .enter().append('text')
+      .text(d => d.data.label)
+      .attr('transform', d => {
+        const centroid = arc.centroid(d);
+        const x = centroid[0] + centroid[0] * (1.2);
+        const y = centroid[1] + centroid[1] * (1.2);
+        return `translate(${x}, ${y})`;
+      })
+      .style('text-anchor', 'end')
+      .style('alignment-baseline', 'middle')
+      .style('font-size', '12px');
 
 
-  // Legend (for one chart, repeat for the other)
-  const legend = svg.append('g')
-    .attr('transform', 'translate(50, 20)');
-
-  povertyData['White'].forEach((data, index) => {
-    legend.append('circle')
-      .attr('cx', 0)
-      .attr('cy', index * 20)
-      .attr('r', 5)
-      .style('fill', d3.schemeCategory10[index]);
-
-    legend.append('text')
-      .attr('x', 20)
-      .attr('y', index * 20)
-      .text(data.label)
-      .style('font-family', 'sans-serif')
-      .style('font-size', '12px')
-      .attr('alignment-baseline', 'middle');
-  });
-
-
-   // Legend for poverty Pie Chart
-   const legend2 = svg.append("g").attr("transform", "translate(${secondChartX - 250}, ${secondChartX - 20})"); // Adjust the translation as needed for the second legend
+   // Legend for population Pie Chart
+  const legend2 = svg.append('g').attr("transform", "translate(0, -10)");
 
   raceData.forEach((data, index) => {
      legend2
@@ -176,8 +206,7 @@ raceG2.selectAll('.arc')
        .attr("y", index * 20)
        .text(data.label)
        .style("font-family", "sans-serif")
-       .style("font-size", "12px")
-       .attr("alignment-baseline", "middle");
+       .style("font-size", "12px");
    });
 
 }
