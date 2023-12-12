@@ -48,7 +48,6 @@
     <h1>Visualization</h1>
     
     <p><em>Include the interactive visualization as part of this page. Static example follows.</em></p>
-    
   </div>
   
   <!-- Your visualization here -->
@@ -56,13 +55,13 @@
     <!-- Change viewbox to whatever you want, e.g. "0 0 1000 6000" This determines your aspect ratio and coordinate system -->    
     <!-- Delete all the sample SVG code below after the viewbox to before the closing tag. Populate this part of the SVG with D3. -->
       <div>
-    <input type="radio" name="race" value="Average"> Average<br>
-    <input type="radio" name="race" value="Black"> Black<br>
-    <input type="radio" name="race" value="Hispanic"> Hispanic<br>
-    <input type="radio" name="race" value="Asian"> Asian<br>
-    <input type="radio" name="race" value="White"> White<br>
-    <input type="radio" name="race" value="Other"> Other<br>
-    </div>
+        <input type="radio" name="race" value="Average"> Average<br>
+        <input type="radio" name="race" value="Black"> Black<br>
+        <input type="radio" name="race" value="Hispanic"> Hispanic<br>
+        <input type="radio" name="race" value="Asian"> Asian<br>
+        <input type="radio" name="race" value="White"> White<br>
+        <input type="radio" name="race" value="Other"> Other<br>
+      </div>
     <br><br>
     <!-- Line Chart for Income -->
     <div class="linechart-holder" id="linechart_income"></div>
@@ -70,7 +69,7 @@
     <div class="linechart-holder" id="linechart_rent"></div>
 
     <svg id="vis-svg"
-      preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 800 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      preserveAspectRatio="xMidYMid meet" class="marks" viewBox="-140 0 800 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <!-- Add a <g> (group) element to contain our first pie chart -->
       <g id="pie-chart-container"></g>
       <!-- Add a <g> element to contain our second pie chart -->
@@ -79,7 +78,7 @@
     <!-- Don't delete the closing tag! -->
 
     </svg>
-  
+  </div>
   <!-- Your writeup goes here -->
   <div class = "content-column">
 
@@ -145,5 +144,7 @@
   <script src="js/linechart_rent.js"></script>
   <script src="js/piechart.js"></script>
   <script src="js/visualization.js"></script>
+
+</body>
 
 </html>
