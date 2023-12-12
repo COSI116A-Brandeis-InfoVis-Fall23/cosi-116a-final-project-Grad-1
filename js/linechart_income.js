@@ -64,14 +64,14 @@ function linechart_income() {
   
         // Draw points
         let circles = svg.selectAll(".dot-" + i)
-  .data(processedData[i])
-  .enter().append("circle")
-  .attr("class", "dot-" + i)
-  .attr("cx", (d, j) => xScale(yearData[j]))
-  .attr("cy", (d) => yScale(d))
-  .attr("r", 3.5)
-  .style("fill", colorData[i])
-  .attr("data-original-color", colorData[i]);  // 存储原始颜色
+          .data(processedData[i])
+          .enter().append("circle")
+          .attr("class", "dot-" + i)
+          .attr("cx", (d, j) => xScale(yearData[j]))
+          .attr("cy", (d) => yScale(d))
+          .attr("r", 3.5)
+          .style("fill", colorData[i])
+          .attr("data-original-color", colorData[i]); // store original color of the point
 
   
          circles.on("click", function(d) {
@@ -104,7 +104,7 @@ function linechart_income() {
          .attr("y", 0 )
          .attr("text-anchor", "middle")  
          .style("font-size", "14px") 
-         .text("Income change by race 2010-2022");
+         .text("Income change in Percentage by Race 2010-2022");
 
          // Add horizontal grid 
         svg.selectAll("horizontalGrid").data(yScale.ticks()).enter()
@@ -132,7 +132,6 @@ function linechart_income() {
         .call(brush);
         
         function linechart_rent_highlight(selectedRaces, selectedYears) {
-          // 检查 selectedYears 是否有效
           if (!selectedYears[0] || !selectedYears[1]) return;
         
           const [startYear, endYear] = selectedYears.map(year => Math.round(year));

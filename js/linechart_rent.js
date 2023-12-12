@@ -56,7 +56,7 @@ function linechart_rent() {
     .attr("y", 0)
     .attr("text-anchor", "middle")
     .style("font-size", "14px")
-    .text("Yearly Data Representation");
+    .text("Median Rent change in Percentage 2010-2022");
 
   // Add horizontal grid
   svg.selectAll("horizontalGrid").data(yScale.ticks()).enter()
