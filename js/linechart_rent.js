@@ -8,12 +8,8 @@ function linechart_rent() {
     margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
   // Set up scales
-  let xScale = d3.scaleLinear()
-    .range([margin.left, width - margin.right])
-    .domain([d3.min(yearData), d3.max(yearData)]); 
-  let yScale = d3.scaleLinear()
-    .range([height - margin.top, margin.bottom])
-    .domain([d3.min(values), d3.max(values)]);
+  let xScale = d3.scaleLinear().range([margin.left, width - margin.right]).domain([d3.min(yearData), d3.max(yearData)]); 
+  let yScale = d3.scaleLinear().range([height - margin.top, margin.bottom]).domain([d3.min(values), d3.max(values)]);
 
   // Create SVG element
   let svg = d3.select("#linechart_rent")
@@ -21,7 +17,7 @@ function linechart_rent() {
     .attr("viewBox", [0, 0, width + margin.left + margin.right, height + margin.top + margin.bottom].join(" "))
     .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  // Create axes
+  // Create X Y axis
   let xAxis = svg.append("g")
     .attr("transform", "translate(0," + (height - margin.bottom) + ")")
     .call(d3.axisBottom(xScale).tickFormat(d3.format("d"))); 
@@ -42,13 +38,27 @@ function linechart_rent() {
     .attr('stroke-width', "4px")
     .attr("fill", "none");
 
-  let circles = svg.selectAll("circle")
-    .data(values)
-    .enter().append("circle")
-    .attr("cx", (d, i) => xScale(yearData[i]))
-    .attr("cy", d => yScale(d))
-    .attr("r", 5)
-    .style("fill", "black");
+  // point and text
+  let circles = svg.selectAll(".dot-group")
+  .data(values)
+  .enter().append("g")
+  .attr("class", "dot-group");
+
+  // Add point
+  circles.append("circle")
+  .attr("cx", (d, i) => xScale(yearData[i]))
+  .attr("cy", d => yScale(d))
+  .attr("r", 5)
+  .style("fill", "black");
+
+  // Display value of the point
+  circles.append("text")
+  .text((d) => d.toFixed(2)) 
+  .attr("x", (d, i) => xScale(yearData[i]) - 12) 
+  .attr("y", (d) => yScale(d) - 20) 
+  .attr("font-size", "11px")
+  .attr("fill", "Orange");
+  //.attr("font-weight", "bold")
 
   // Add title
   svg.append("text")
@@ -77,47 +87,44 @@ function linechart_rent() {
       [width - margin.right, height - margin.bottom]
     ]);
 
-  svg.append("g")
-    .attr("class", "brush")
-    .call(brush);
+  svg.append("g").attr("class", "brush").call(brush);
 
-    function linechart_income_highlight(selectedRaces, selectedYears) {
-      if (!selectedYears.length) return;
-    
-      d3.select("#linechart_income").selectAll("circle")
-        .style("fill", function(d, i) {
-          const year = yearData[i]; 
-          // Highlight in black, other keep its origin color
-          if (selectedYears.includes(year)) {
-            return "black"; 
-          } else {
-            return d3.select(this).style("fill"); 
-          }
-        });
-    }
-    
-
-    function highlight() {
-      if (!d3.event.selection) return;
-      const [[x0, y0], [x1, y1]] = d3.event.selection;
-      const selectedYearIndexes = [];
-      resetPoints();
-     // get selected year
-      svg.selectAll("circle").classed("selected", function(d, i) {
-        const cx = +d3.select(this).attr("cx");
-        const cy = +d3.select(this).attr("cy");
-        const isSelected = x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
+  function linechart_income_highlight(selectedRaces, selectedYears) {
+    if (!selectedYears.length) return;
   
-        if (isSelected) {
-          selectedYearIndexes.push(i); // add index of selected year
+    d3.select("#linechart_income").selectAll("circle")
+      .style("fill", function(d, i) {
+        const year = yearData[i]; 
+        // Highlight in black, other keep its origin color
+        if (selectedYears.includes(year)) {
+          return "black"; 
+        } else {
+          return d3.select(this).style("fill"); 
         }
-  
-        return isSelected;
-      }).filter(".selected").style("fill", "red");
-  
-      const selectedYears = selectedYearIndexes.map(i => yearData[i]); 
-      linechart_income_highlight(selectedRaces, selectedYears); 
-    }
+      });
+  }
+    
+
+  function highlight() {
+    if (!d3.event.selection) return;
+    const [[x0, y0], [x1, y1]] = d3.event.selection;
+    const selectedYearIndexes = [];
+    resetPoints();
+    // get selected year
+    svg.selectAll("circle").classed("selected", function(d, i) {
+      const cx = +d3.select(this).attr("cx");
+      const cy = +d3.select(this).attr("cy");
+      const isSelected = x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
+      // add index of selected year
+      if (isSelected) {
+        selectedYearIndexes.push(i); 
+      }
+      return isSelected;
+    }).filter(".selected").style("fill", "red");
+
+    const selectedYears = selectedYearIndexes.map(i => yearData[i]); 
+    linechart_income_highlight(selectedRaces, selectedYears); 
+  }
 
   function brushEnd() {
     if (!d3.event.selection) return;
@@ -140,8 +147,6 @@ function linechart_rent() {
   selectedYears = [null, null];
   }
 }
-
-
 
 
 
