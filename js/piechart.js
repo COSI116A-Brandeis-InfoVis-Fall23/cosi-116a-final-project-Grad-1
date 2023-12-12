@@ -39,8 +39,6 @@ function piechart() {
       { label: '200 percent or more', value: 1247}],
   };
 
-  const povertyCategory = ['less than 50 percent', '50 to 99 percent', '100 to 149 percent',
-    '150 to 199 percent', '200 percent and more']
 
   const raceData = [
     { label: 'White', value: 1500 },
@@ -77,6 +75,22 @@ const secondChartY = 200; // Y-coordinate for the second pie chart
       .on('click', handleClick);
 
   function handleClick(d) {
+    console.log('Clicked!', d);
+
+    const clickedRace = d.data.label;
+
+    console.log('Clicked Race:', clickedRace);
+
+    if (povertyData.hasOwnProperty(clickedRace)) {
+      const clickedPovertyData = povertyData[clickedRace];
+      console.log('Clicked Poverty Data:', clickedPovertyData);
+
+      // Update the second pie chart with the poverty data for the clicked race
+      updatePieChart('second-pie-chart-container', clickedPovertyData);
+    } else {
+      console.error('Invalid clicked race:', clickedRace);
+    }
+
     // Handle click event by updating the second pie chart
     const correspondingData = povertyData[d.data.label]; // Replace this with your own data retrieval logic
     updatePieChart('chartContainer2', correspondingData);
@@ -84,9 +98,12 @@ const secondChartY = 200; // Y-coordinate for the second pie chart
 
   // Function to update the second pie chart
   function updatePieChart(containerId, newData) {
+    console.log('Updating pie chart with data:', newData);
+
     // Select the second pie chart container's <g> element
-    const svg = d3.select(`#${containerId}`);
-    const chartG = svg.select('g');
+    const chartG = d3.select(`#${containerId}`);
+
+    console.log('Selected <g> element:', chartG.node());
 
     // Pie chart setup
     const pie = d3.pie().value(d => d.value);
@@ -125,7 +142,7 @@ raceG2.selectAll('.arc')
   const legend = svg.append('g')
     .attr('transform', 'translate(50, 20)');
 
-  povertyCategory.forEach((data, index) => {
+  povertyData['White'].forEach((data, index) => {
     legend.append('circle')
       .attr('cx', 0)
       .attr('cy', index * 20)
@@ -142,10 +159,10 @@ raceG2.selectAll('.arc')
   });
 
 
-   // Legend for Population by Race Pie Chart
-   const legend2 = svg.append("g").attr("transform", "translate(250, 20)"); // Adjust the translation as needed for the second legend
+   // Legend for poverty Pie Chart
+   const legend2 = svg.append("g").attr("transform", "translate(${secondChartX - 250}, ${secondChartX - 20})"); // Adjust the translation as needed for the second legend
 
-   raceData.forEach((data, index) => {
+  raceData.forEach((data, index) => {
      legend2
        .append("circle")
        .attr("cx", 0)
