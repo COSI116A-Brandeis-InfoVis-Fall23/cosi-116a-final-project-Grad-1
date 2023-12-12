@@ -1,4 +1,3 @@
-
 function piechart() {
 
   const educationData = [
@@ -8,19 +7,13 @@ function piechart() {
     { label: 'Graduate', value: 2000 }
   ];
 
-  // Load CSV data and process it
-  d3.csv('../data/real_data/population_races_over_years.csv', (error, data) => {
-    if (error) {
-      // Handle error if the file can't be accessed or parsed
-      console.error('Error loading the CSV file: ', error);
-      return;
-    }
-    // Extract the data for the desired year (e.g., 2022)
-    const year = '2022'; // Change this to the desired year
-    const raceData = data.map(row => ({
-      label: row[' Label (Grouping) '], // Make sure column name matches CSV header
-      value: parseInt(row[year].replace(/,/g, ''), 10), // Remove commas and parse as an integer
-    }));
+  const raceData = [
+    { label: 'White', value: 1500 },
+    { label: 'Black', value: 1350 },
+    { label: 'Asian', value: 1250 },
+    { label: 'Hispanic', value: 1250 },
+    { label: 'Other', value: 650 }
+  ];
 
   // Setup the SVG
   const svg = d3.select('#vis-svg'); // Select the existing SVG element
@@ -56,7 +49,7 @@ raceG2.selectAll('.arc')
     .attr('fill', (d, i) => d3.schemeCategory10[i % 10]);
 
 
-  // Legend for education chart.
+  // Legend (for one chart, repeat for the other)
   const legend = svg.append('g')
     .attr('transform', 'translate(50, 20)');
 
@@ -75,6 +68,7 @@ raceG2.selectAll('.arc')
       .style('font-size', '12px')
       .attr('alignment-baseline', 'middle');
   });
+
 
    // Legend for Population by Race Pie Chart
    const legend2 = svg.append("g").attr("transform", "translate(250, 20)"); // Adjust the translation as needed for the second legend
@@ -97,5 +91,5 @@ raceG2.selectAll('.arc')
        .attr("alignment-baseline", "middle");
    });
 
-  });
+
 }
