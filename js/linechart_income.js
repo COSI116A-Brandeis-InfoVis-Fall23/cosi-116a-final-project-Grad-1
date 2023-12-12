@@ -52,7 +52,8 @@ function linechart_income() {
       let line = d3.line()
                   .x((d, i) => xScale(yearData[i]))
                   .y((d) => yScale(d));
-  
+      
+                  
       // Draw lines and points
       for (let i = 0; i < colorData.length; ++i) {
         svg.append("path")
@@ -63,13 +64,15 @@ function linechart_income() {
   
         // Draw points
         let circles = svg.selectAll(".dot-" + i)
-          .data(processedData[i])
-          .enter().append("circle")
-          .attr("class", "dot-" + i)
-          .attr("cx", (d, j) => xScale(yearData[j]))
-          .attr("cy", (d) => yScale(d))
-          .attr("r", 3)
-          .style("fill", colorData[i]);
+  .data(processedData[i])
+  .enter().append("circle")
+  .attr("class", "dot-" + i)
+  .attr("cx", (d, j) => xScale(yearData[j]))
+  .attr("cy", (d) => yScale(d))
+  .attr("r", 3.5)
+  .style("fill", colorData[i])
+  .attr("data-original-color", colorData[i]);  // 存储原始颜色
+
   
          circles.on("click", function(d) {
           let isSelected = d3.select(this).classed("selected");
@@ -129,29 +132,19 @@ function linechart_income() {
         .call(brush);
         
         function linechart_rent_highlight(selectedRaces, selectedYears) {
-            if (!selectedRaces.length || !selectedYears[0] || !selectedYears[1]) return;
-          
-            const [startYear, endYear] = selectedYears;
-          
-            d3.select("#linechart_rent").selectAll("circle")
-              .style("fill", function(d, i) {
-                return colorData[parseInt(d3.select(this).attr("class").split("-")[1])];
-              })
-              .classed("selected", false);
-          
-            selectedRaces.forEach(selectedRace => {
-              const raceIndex = raceData.indexOf(selectedRace);
-          
-              d3.select("#linechart_rent").selectAll(".dot-" + raceIndex)
-                .classed("selected", function(d, i) {
-                  const year = yearData[i];
-                  return startYear <= year && year <= endYear;
-                })
-                .style("fill", function() {
-                  return d3.select(this).classed("selected") ? "black" : colorData[raceIndex];
-                });
+          // 检查 selectedYears 是否有效
+          if (!selectedYears[0] || !selectedYears[1]) return;
+        
+          const [startYear, endYear] = selectedYears.map(year => Math.round(year));
+  
+          d3.select("#linechart_rent").selectAll("circle")
+            .style("fill", function(d, i) {
+              const year = yearData[i]; 
+              //console.log(year)
+              return year >= startYear && year <= endYear ? "red" : "black";
             });
-          }
+        }
+        
           
         
         function highlight() {
@@ -184,15 +177,14 @@ function linechart_income() {
       // Reset all points
       function resetPoints() {
         svg.selectAll("circle")
-          .style("fill", function() {
-            return colorData[parseInt(d3.select(this).attr("class").split("-")[1])];
-          })
-          .classed("selected", false);
+        .style("fill", function() {
+          return d3.select(this).attr("data-original-color");
+        })
+        .classed("selected", false);
       
         linechart_rent_highlight(selectedRaces, selectedYears);
       }
       
-  
     });
   }
   
