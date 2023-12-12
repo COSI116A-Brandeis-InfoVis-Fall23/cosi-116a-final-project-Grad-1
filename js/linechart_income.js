@@ -33,7 +33,8 @@ function linechart_income() {
   let yScale = d3.scaleLinear().range([height - margin.top, margin.bottom]).domain([-10, 25]);
 
   // Load the real data from csv file
-  d3.csv("../data/real_data/percentage_change_income.csv", function(error, data) {
+  // Note: if you pull repo to your local device, make sure to change the path to '../data/real_data/percentage_change_income.csv'
+  d3.csv("./data/real_data/percentage_change_income.csv", function(error, data) {
     if (error) throw error;
 
     // Process data
