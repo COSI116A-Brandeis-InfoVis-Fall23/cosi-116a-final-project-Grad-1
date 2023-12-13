@@ -58,12 +58,11 @@ function piechart() {
   const arc = d3.arc().innerRadius(0).outerRadius(100);
 
   // Positioning for the first pie chart
-  const firstChartX = 100; // X-coordinate for the first pie chart
-  const firstChartY = 200; // Y-coordinate for the first pie chart
-
+  const firstChartX = 100;
+  const firstChartY = 200;
   // Positioning for the second pie chart
-  const secondChartX = 500; // X-coordinate for the second pie chart
-  const secondChartY = 200; // Y-coordinate for the second pie chart
+  const secondChartX = 500;
+  const secondChartY = 200;
 
   // population level Pie Chart
   const raceG = svg.select('#pie-chart-container')
@@ -89,7 +88,7 @@ function piechart() {
       console.log('Clicked Poverty Data:', clickedPovertyData);
 
       // Update the second pie chart with the poverty data for the clicked race
-      updatePieChart('second-pie-chart-container', clickedPovertyData);
+      updatePieChart('second-pie-chart-container', clickedPovertyData, clickedRace);
 
     } else {
       console.error('Invalid clicked race:', clickedRace);
@@ -98,7 +97,7 @@ function piechart() {
   }
 
   // Function to update the second pie chart
-  function updatePieChart(containerId, newData) {
+  function updatePieChart(containerId, newData, selectedRace) {
     console.log('Updating pie chart with data:', newData);
 
     // Filter out data points with a value of 0
@@ -160,6 +159,11 @@ function piechart() {
         })
         .style('text-anchor', 'middle')
         .style('font-size', '11px');
+
+    // update title to show selected race
+    const title = chartG.selectAll('.chart-title')
+
+    title.text('Poverty Status for ' + selectedRace)
 
   }
 

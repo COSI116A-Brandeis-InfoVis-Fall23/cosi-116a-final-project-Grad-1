@@ -40,14 +40,26 @@
     
     <h1>Motivation</h1>
     
-    <p><em>Summary of user needs and motivating questions.</em></p>
-    
-    <p><em>Expectation: There is a clear focus, and a developed explanation of the problem, and a reasonable response is proposed.</em></p>
+<!--    <p><em>Summary of user needs and motivating questions.</em></p>-->
+<!--    -->
+<!--    <p><em>Expectation: There is a clear focus, and a developed explanation of the problem, and a reasonable response is proposed.</em></p>-->
+    <p>We've discovered that housing inequality can be affected by various factors,
+      including income disparities, ethnic-based discrimination, demand for housing outpacing supply,
+      and rising need for affordable housing.
+      This reminds us that the commodification of housing is taking over the basic need of having a roof or shelter.
+      When real estate developers mainly aim to increase revenue, low-income residents will have fewer housing options.
+      A correlated study from Joint Center For Housing Studies also states that
+      the lower-income renters have less residual income than ever before. And in a specific case,
+      the majority of renter in Detroit, Michigan are Black or African American,
+      according to Census Housing data from Census.gov.</p>
+    <p>We thus are curious about the shifts in income and rental expenses among different racial and ethnic groups
+      in the U.S. over the recent years, as well as the extent to which households are facing challenges for making their living,
+      since housing issue encompasses multiple facets.</p>
 
     
     <h1>Visualization</h1>
     
-    <p><em>Include the interactive visualization as part of this page. Static example follows.</em></p>
+<!--    <p><em>Include the interactive visualization as part of this page. Static example follows.</em></p>-->
   </div>
   
   <!-- Your visualization here -->
@@ -100,16 +112,36 @@
 
     <h1>Visualization explanation</h1>
     
-    <p><em>
-      Final visualization screenshots (PNG images), design justifications, UI walk-through, and linked presentation slides.
+<!--    <p><em>Final visualization screenshots (PNG images), design justifications, UI walk-through, and linked presentation slides.</em></p>-->
+    <p>
+      Our visualization includes two parts. The top section features two line charts reflecting the changes in income and rent from 2010 to 2022.
+      Viewer can compare these two charts to observe trends from 2010 to 2022. Viewer can also explore the details for certain race by selecting the checkbox on the top left.
+      Additionally, viewer can use the provided buttons and mouse to explore more details.
       <br>
-      Our visualization includes two parts. The top section features two line charts reflecting the changes in income and rent from 2010 to 2022. 
-      Viewer can compare these two charts to observe trends from 2010 to 2022. Viewer can also explore the details for certain race by selecting the checkbox on the top left. Additionally, viewer can use the provided buttons and mouse to explore more details.
-      <br><br><b>Brushing and Linking on Line Charts</b><br>
-      <img src="images/linecharts_brushing_linking.png" alt="line chart brushing and linking function" width="700" height="400"/>
-      <br><b>Button and Checkboxes on Line Chart</b><br>
-      <img src="images/linechart_button.png" alt="line chart button function" width="700" height="400"/>
-    </em></p>
+      <b><em>Brushing and Linking on Line Charts</em></b>
+      <img src="images/linecharts_brushing_linking.png" alt="line chart brushing and linking function" class="img"/>
+      <br>
+      <b><em>Button and Checkboxes on Line Chart</em></b>
+      <img src="images/linechart_button.png" alt="line chart button function" class="img"/>
+      <br>
+    </p>
+    <br>
+    <p>
+      Besides the line charts section, the bottom section features two pie charts linked by a click-on function in the left pie chart.
+      The left pie chart shows population for each ethic group in average over past years.
+      The chart on the right illustrates the percentage breakdown of the selected race across different poverty statuses.
+      For instance, if an individual's income matches the poverty line, this person's income is considered 100% of the poverty line.
+      If an individual's income falls below the poverty line, then this person would be categorized as either "< 50%" or "50~99%".
+      <br>
+      Viewer can click on each slice or segment of the left pie chart to examine the distribution of poverty status among the selected race.
+      <br>
+      <b><em>Pie Charts initialization</em></b>
+      <img src="images/piechart_initial.png" class="img"  alt="pie charts initialization"/>
+      <br>
+      <b><em>Pie Charts after clicked on the slice of 'Black or African American'</em></b>
+      <img src="images/piechart_selected.png" alt="pie charts selected" class="img">
+      <br>
+    </p>
 
     <h1>Data Analysis</h1>
     <p><em>Summary of data, data types, and data preprocessing.</em></p>
@@ -138,7 +170,7 @@
 
     <p><em>
       In this project, our group visualize data to explore Housing Inequality in U.S.. Our group has added some interactive functions
-       (such as brushing and linking, buttons, and mouse interactions) to help viewers interact with the data. 
+       (such as brushing and linking, buttons, and click-on interactions) to help viewers interact with the data.
       <br>
       The visualization could be improved further if we had more time to collect additional related data.
     </em></p>
@@ -151,6 +183,14 @@
     <ul>
       <li><a href="https://d3js.org/">D3: Data-Driven Documents</a> by Mike Bostock.</li>
       <li><a href="https://codepo8.github.io/css-fork-on-github-ribbon/#">Pure CSS responsive "Fork me on GitHub" ribbon</a> by Chris Heilmann.</li>
+    </ul>
+
+    <p><em>Data sources</em></p>
+
+    <ul>
+      <li><a href="https://data.census.gov/">U.S. Census Data</a> </li>
+      <li><a href="https://www.census.gov/programs-surveys/ahs/data/interactive/ahstablecreator.html?s_areas=00000&s_year=2021&s_tablename=TABLE1&s_bygroup1=1&s_bygroup2=1&s_filtergroup1=1&s_filtergroup2=1">American Housing Survey (AHS)</a> </li>
+      <li><a href="https://www.jchs.harvard.edu/blog/lower-income-renters-have-less-residual-income-ever">Joint Center For Housing Studies</a> </li>
     </ul>
     
   </div>
