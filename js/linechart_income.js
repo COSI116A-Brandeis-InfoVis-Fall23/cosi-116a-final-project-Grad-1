@@ -1,4 +1,5 @@
 function linechart_income() {
+  let showValues = false;
   const raceData = ["White", "Black or African American", 
         "American Indian and Alaska Native", "Asian", 
         "Native Hawaiian and Other Pacific Islander", "Some other race"];
@@ -30,9 +31,10 @@ function linechart_income() {
     "Native Hawaiian and Other Pacific Islander": [0.0, -9.301458080175324, -7.641981233221558, -10.271776548922551, -7.822579863158814, -3.0647937314863007, -1.6815483349625064, 2.37282956272948, 1.8686543841985057, 7.413868156134855, 6.694210188986993, 2.2304251283561403],
     "Some other race": [0.0, -5.7427181667737885, -4.50617494269604, -3.6640097522440436, -1.542015530139164, 2.1820154148454933, 6.462941216791034, 9.875731794436447, 11.262881692536133, 18.461175733907996, 21.39478040503019, 23.351061280796756]
   };
+
   const width = 400,
     height = 400,
-    margin = { top: 20, right: 20, bottom: 20, left: 20 };
+    margin = {top: 20, right: 20, bottom: 20, left: 20};
 
   // Set up scales
   let xScale = d3.scaleLinear()
@@ -169,7 +171,7 @@ function linechart_income() {
         svg.selectAll("circle").filter(function() {
             const cx = +d3.select(this).attr("cx");
             const cy = +d3.select(this).attr("cy");
-            return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
+            return x0 < cx && cx < x1 && y0 < cy && cy < y1;
           }).classed("selected", true).style("fill", "black"); 
 
         linechart_rent_highlight(selectedRaces, selectedYears);
@@ -191,69 +193,74 @@ function linechart_income() {
       linechart_rent_highlight(selectedRaces, selectedYears);
     }
 
-    function updateLineChart(selectedRace) {
-      // Romove previous selection
+    function updateLineChart(selectedRaces) {
+      // reset 
       svg.selectAll("path").remove();
       svg.selectAll(".dot-group").remove();
-      let updatedProcessedData;
-      // Show all if click ShowAll, else only display selected race
-      if (selectedRace === "All") {
-        updatedProcessedData = processedData;
-      } else {
-        const raceIndex = raceData.indexOf(selectedRace);
-        updatedProcessedData = [processedData[raceIndex]];
-      }
-    
-      // Reset Selected line and data point
-      svg.selectAll("path").remove();
       svg.selectAll("circle").remove();
-
-      // Re-Draw point and line
-      for (let i = 0; i < updatedProcessedData.length; ++i) {
-        let race = selectedRace === "All" ? raceData[i] : selectedRace;
-        let color = raceColorMap[race];
-
-        svg.append("path")
-          .attr('d', line(updatedProcessedData[i]))
-          .attr('stroke', color)
-          .attr('stroke-width', "3px")
-          .attr("fill", "none");
-    
-          let circles = svg.selectAll(".dot-" + i)
-          .data(updatedProcessedData[i])
-          .enter()
-          .append("g")
-          .attr("class", "dot-group");
-    
-        circles.append("circle")
-          .attr("cx", (d, j) => xScale(yearData[j]))
-          .attr("cy", (d) => yScale(d))
-          .attr("r", 4)
-          .style("fill", color)
-          .attr("data-original-color", color);
-    
-      // Display value only when 'Filter' button is clicked
-        if (selectedRace !== "All") {
-          circles.append("text")
-          .text((d) => d.toFixed(2)) 
-          .attr("x", (d, j) => xScale(yearData[j]) - 10) 
-          .attr("y", (d) => yScale(d) -20)
-          .attr("font-size", "10px")
-          .attr("fill", "black");
-        }
-      }
-    }
-    
-    // Add event listener to button
-    document.getElementById("filterButton").addEventListener("click", function() {
-      // get the matched race on selected buttion, pass it to updateLineChart
-      var selectedRace = document.querySelector('input[name="race"]:checked').value;
-      updateLineChart(selectedRace);
-    });
-
-    document.getElementById("showAllButton").addEventListener("click", function() {
-      updateLineChart("All");
-    });
-
   
-}
+      // display line for selected race
+      selectedRaces.forEach(race => {
+          const raceIndex = raceData.indexOf(race);
+          let updatedProcessedData = [processedData[raceIndex]];
+          let color = raceColorMap[race];
+  
+          svg.append("path")
+              .attr('d', line(updatedProcessedData[0]))
+              .attr('stroke', color)
+              .attr('stroke-width', "3px")
+              .attr("fill", "none");
+  
+          let circles = svg.selectAll(".dot-" + raceIndex)
+              .data(updatedProcessedData[0])
+              .enter()
+              .append("g")
+              .attr("class", "dot-group");
+  
+          circles.append("circle")
+              .attr("cx", (d, j) => xScale(yearData[j]))
+              .attr("cy", (d) => yScale(d))
+              .attr("r", 4)
+              .style("fill", color)
+              .attr("data-original-color", color);
+          
+        // Control to display value 
+          if (selectedRaces !== raceData) {
+            if (showValues){
+              circles.append("text")
+              .text((d) => d.toFixed(2)) 
+              .attr("x", (d, j) => xScale(yearData[j]) - 12) 
+              .attr("y", (d) => yScale(d) -20)
+              .attr("font-size", "10px")
+              .attr("fill", "black");
+          }
+        }
+      });
+
+  }
+    
+    // Only display the selected race
+    document.getElementById("filterButton").addEventListener("click", function() {
+      var checkboxes = document.querySelectorAll('input[name="race"]:checked');
+      var selectedRaces = Array.from(checkboxes).map(el => el.value);
+      updateLineChart(selectedRaces);
+  });
+
+  // Display all race
+    document.getElementById("showAllButton").addEventListener("click", function() {
+      var checkboxes = document.querySelectorAll('input[name="race"]');
+      checkboxes.forEach(function(checkbox) {
+          checkbox.checked = true;
+      });
+      updateLineChart(raceData);
+    });
+
+// Control to display value of the data point or not
+  document.getElementById("showValueButton").addEventListener("click", function() {
+    showValues = !showValues; 
+    var checkboxes = document.querySelectorAll('input[name="race"]:checked');
+    var selectedRaces = checkboxes.length > 0 ? Array.from(checkboxes).map(x => x.value) : [];
+    updateLineChart(selectedRaces);
+  });
+
+  }
