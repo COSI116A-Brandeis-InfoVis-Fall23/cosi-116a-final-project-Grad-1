@@ -144,9 +144,33 @@
     </p>
 
     <h1>Data Analysis</h1>
-    <p><em>Summary of data, data types, and data preprocessing.</em></p>
-
-    <p><em>Expectation: Data sources match the problem statement and are appropriate. These descriptions should be very explicit so someone could read your page and properly reproduce your results.</em></p>
+<!--    <p><em>Summary of data, data types, and data preprocessing.</em></p>-->
+<!--    <p><em>Expectation: Data sources match the problem statement and are appropriate. These descriptions should be very explicit so someone could read your page and properly reproduce your results.</em></p>-->
+    <p>
+      Motivated by the impact of income and financial conditions on housing,
+      we conducted a data analysis to explore the shifts in income and rental costs among renters,
+      categorized by racial and ethnic groups in the United States.
+      Our objective was also to find out the number of renters within each racial group who fall below the poverty threshold.
+      The population, income, and poverty data were sourced from the official website data.census.gov.
+      <br>
+      We processed our data using Python packages Pandas and Numpy.
+      Generally, we loaded the datasets into Pandas DataFrame objects to clean and eliminate irrelevant data entries,
+      utilizing built-in mathematical functions for calculations.
+      Despite originating from the same website, the data sets exhibited inconsistencies in format and layout.
+      We had to fine-tune our delivered real date manually afterword.
+      <br>
+      The datasets for renter income and rent costs have been adjusted using the Consumer Price Index (CPI-U)
+      which is obtained from bls.gov.
+      As illustrated in our visualization, our data uses the year 2010 as a base year for calculating all inflation-adjusted income and costs.
+      <br>
+      To depict changes in income and costs, the data has been calculated to illustrate variations as a percentage of the base year value.
+      Due to the absence of specific rent cost data for each racial and ethnic group,
+      we can only present the median rent cost for all renters.
+      Nevertheless, it is already apparent that renters are facing higher rental costs year after year,
+      particularly evident as certain racial groups have a larger number of households falling below the poverty threshold.
+      The population and poverty status data have been averaged over a span of several years, from 2014 to 2019.
+    </p>
+    <br>
 
     <h1>Task Analysis</h1>
 
