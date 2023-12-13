@@ -4,41 +4,41 @@ function piechart() {
   // Thus, we have hardcoded data right here.
   const povertyData = {
     'White': [
-        { label: '<50%', value: 5785 },
-      { label: '50%~99%', value: 6013 },
-      { label: '100%~149%', value: 7298 },
-      { label: '150%~199%', value: 8099 },
-      { label: '>200%', value: 69803}],
+        { label: '< 50%', value: 5785 },
+      { label: '50~99%', value: 6013 },
+      { label: '100~149%', value: 7298 },
+      { label: '150~199%', value: 8099 },
+      { label: '> 200%', value: 69803}],
     'Black or African American': [
-      { label: '<50%', value: 2014 },
-      { label: '50%~99%', value: 2025 },
-      { label: '100%~149%', value: 1765 },
-      { label: '150%~199%', value: 1889 },
-      { label: '>200%', value: 9422}],
+      { label: '< 50%', value: 2014 },
+      { label: '50~99%', value: 2025 },
+      { label: '100~149%', value: 1765 },
+      { label: '150~199%', value: 1889 },
+      { label: '> 200%', value: 9422}],
     'American Indian and Alaska Native': [
-      { label: '<50%', value: 153 },
-      { label: '50%~99%', value: 193 },
-      { label: '100%~149%', value: 204 },
-      { label: '150%~199%', value: 121 },
-      { label: '>200%', value: 761}],
+      { label: '< 50%', value: 153 },
+      { label: '50~99%', value: 193 },
+      { label: '100~149%', value: 204 },
+      { label: '150~199%', value: 121 },
+      { label: '> 200%', value: 761}],
     'Asian': [
-      { label: '<50%', value: 437 },
-      { label: '50%~99%', value: 339 },
-      { label: '100%~149%', value: 318 },
-      { label: '150%~199%', value: 380 },
-      { label: '>200%', value: 4904}],
+      { label: '< 50%', value: 437 },
+      { label: '50~99%', value: 339 },
+      { label: '100~149%', value: 318 },
+      { label: '150~199%', value: 380 },
+      { label: '> 200%', value: 4904}],
     'Native Hawaiian and Other Pacific Islander': [
-      { label: '<50%', value: 0 },
-      { label: '50%~99%', value: 27 },
-      { label: '100%~149%', value: 0 },
-      { label: '150%~199%', value: 0 },
-      { label: '>200%', value: 283}],
+      { label: '< 50%', value: 0 },
+      { label: '50~99%', value: 27 },
+      { label: '100~149%', value: 0 },
+      { label: '150~199%', value: 0 },
+      { label: '> 200%', value: 283}],
     'Some other race': [
-      { label: '<50%', value: 102 },
-      { label: '50%~99%', value: 152 },
-      { label: '100%~149%', value: 172 },
-      { label: '150%~199%', value: 147 },
-      { label: '>200%', value: 1247}],
+      { label: '< 50%', value: 102 },
+      { label: '50~99%', value: 152 },
+      { label: '100~149%', value: 172 },
+      { label: '150~199%', value: 147 },
+      { label: '> 200%', value: 1247}],
   };
 
   const raceData = [
@@ -62,7 +62,7 @@ function piechart() {
   const firstChartY = 200; // Y-coordinate for the first pie chart
 
   // Positioning for the second pie chart
-  const secondChartX = 400; // X-coordinate for the second pie chart
+  const secondChartX = 500; // X-coordinate for the second pie chart
   const secondChartY = 200; // Y-coordinate for the second pie chart
 
   // population level Pie Chart
@@ -133,7 +133,7 @@ function piechart() {
         .attr('stroke', 'white');
 
     // Update text labels
-    const labels = chartG.selectAll('text')
+    const labels = chartG.selectAll('.label')
         .data(pie(filteredData));
 
     // Remove old text labels
@@ -143,22 +143,23 @@ function piechart() {
     labels.text(d => d.data.label)
         .attr('transform', d => {
           const centroid = arc.centroid(d);
-          const x = centroid[0] + centroid[0] * (1.5);
-          const y = centroid[1] + centroid[1] * (1.5);
+          const x = centroid[0] + centroid[0] * (1.55);
+          const y = centroid[1] + centroid[1] * (1.55);
           return `translate(${x}, ${y})`;
         });
 
     // Enter new text labels
     labels.enter().append('text')
+        .attr('class', 'label')
         .text(d => d.data.label)
         .attr('transform', d => {
           const centroid = arc.centroid(d);
-          const x = centroid[0] + centroid[0] * (1.5);
-          const y = centroid[1] + centroid[1] * (1.5);
+          const x = centroid[0] + centroid[0] * (1.55);
+          const y = centroid[1] + centroid[1] * (1.55);
           return `translate(${x}, ${y})`;
         })
-        .style('text-anchor', 'end')
-        .style('font-size', '12px');
+        .style('text-anchor', 'middle')
+        .style('font-size', '11px');
 
   }
 
@@ -174,19 +175,26 @@ function piechart() {
       .attr('fill', (d, i) => d3.schemeCategory10[i % 10])
       .attr('stroke', 'white');
 
-  raceG2.selectAll('text')
+  raceG2.append('text')
+      .attr('class', 'chart-title')
+      .attr('text-anchor', 'middle')
+      .attr('dy', '-12em')
+      .style('font-size', '14px')
+      .text('Poverty Status for the Selected Race');
+
+  raceG2.selectAll('.label')
       .data(pie(povertyData['White']))
       .enter().append('text')
+      .attr('class', 'label')
       .text(d => d.data.label)
       .attr('transform', d => {
         const centroid = arc.centroid(d);
-        const x = centroid[0] + centroid[0] * (1.2);
-        const y = centroid[1] + centroid[1] * (1.2);
+        const x = centroid[0] + centroid[0] * (1.55);
+        const y = centroid[1] + centroid[1] * (1.55);
         return `translate(${x}, ${y})`;
       })
-      .style('text-anchor', 'end')
-      .style('alignment-baseline', 'middle')
-      .style('font-size', '12px');
+      .style('text-anchor', 'middle')
+      .style('font-size', '11px');
 
 
    // Legend for population Pie Chart
